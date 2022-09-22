@@ -1,4 +1,4 @@
-import {useState} from "react"
+import {useEffect, useState} from "react"
 
 function Form(props){
     const [form, setForm] = useState({
@@ -10,6 +10,12 @@ function Form(props){
         symptoms: "",
     })
     const [error, setError] = useState(false)
+
+    useEffect(()=> {
+        if(props.patientEdit){
+            setForm(props.patientEdit)
+        }
+    },[props.patientEdit])
 
     function handleForm(event){
         const key = event.target.id;
@@ -23,7 +29,7 @@ function Form(props){
         if(missingFields){
             setError(true)
         } else {
-        props.handleSubmit(event, form)
+        props.patientEdit ? props.handleEdit(form) : props.handleSubmit(form)
         setError(false)
         setForm({
             id: window.crypto.randomUUID(),
@@ -33,6 +39,7 @@ function Form(props){
             date: "",
             symptoms: "",
         })
+        props.setPatientEdit(null)
         }
     }
 
@@ -64,7 +71,7 @@ function Form(props){
                 </div>
                 <input type="submit" 
                 className="bg-indigo-600 w-full p-2 text-white uppercase font-bold rounded-md hover:bg-indigo-800 cursor-pointer transition-all mb-2 mt-2"
-                value="Add patient"
+                value={props.patientEdit ? "Edit patient" : "Add patient"}
                 onClick={event => onSubmit(event)}
                 />
             </form>
