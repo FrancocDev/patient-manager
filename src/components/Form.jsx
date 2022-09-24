@@ -1,4 +1,5 @@
 import {useEffect, useState} from "react"
+import Error from "./Error"
 
 function Form(props){
     const [form, setForm] = useState({
@@ -48,7 +49,7 @@ function Form(props){
             <h2 className="font-black text-3xl text-center">Patient follow-up</h2>
             <p className="mt-2">Adding and <span className="text-indigo-500 font-bold">managing</span> patients</p>
             <form className="mt-4 flex shadow-md bg-white rounded-lg flex-col p-4 w-10/12">
-                {error && <div className="bg-red-600 text-white text-center p-1 font-bold rounded-md">All fields must be filled in</div>}
+                {error && <Error>All fields must be filled in</Error>}
                 <div className="mt-2 mb-4">
                     <label htmlFor="name" className="text-gray-700 uppercase font-bold">Pet's name</label>
                     <input className="p-2 border-2 w-full mt-1 placeholder-gray-400 rounded-md" type="text" id="name" placeholder="Pet's name" value={form.name} onChange={e => handleForm(e)}/>   
