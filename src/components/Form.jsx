@@ -13,11 +13,23 @@ function Form(props){
     const [error, setError] = useState(false)
 
     useEffect(()=> {
-        if(props.patientEdit){
-            setForm(props.patientEdit)
+        if(props.patient){
+            setForm(props.patient)
         }
-    },[props.patientEdit])
+    },[props.patient])
 
+
+    function handleEdit(patient){
+        const newArr = props.patients.map(value => {
+          return (value.id === patient.id ? patient : value)
+        })
+        props.setPatients(newArr)
+      }
+
+    function handleSubmit(newPatient){
+        props.setPatients(prev => [...prev, newPatient])
+    }
+    
     function handleForm(event){
         const key = event.target.id;
         const value = event.target.value;
@@ -30,7 +42,7 @@ function Form(props){
         if(missingFields){
             setError(true)
         } else {
-        props.patientEdit ? props.handleEdit(form) : props.handleSubmit(form)
+        props.patient ? handleEdit(form) : handleSubmit(form)
         setError(false)
         setForm({
             id: window.crypto.randomUUID(),
@@ -40,7 +52,7 @@ function Form(props){
             date: "",
             symptoms: "",
         })
-        props.setPatientEdit(null)
+        props.setPatient(null)
         }
     }
 
@@ -72,7 +84,7 @@ function Form(props){
                 </div>
                 <input type="submit" 
                 className="bg-indigo-600 w-full p-2 text-white uppercase font-bold rounded-md hover:bg-indigo-800 cursor-pointer transition-all mb-2 mt-2"
-                value={props.patientEdit ? "Edit patient" : "Add patient"}
+                value={props.patient ? "Edit patient" : "Add patient"}
                 onClick={event => onSubmit(event)}
                 />
             </form>
