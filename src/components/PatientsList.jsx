@@ -9,7 +9,8 @@ function PatientList(props){
         email={patient.email} 
         date={patient.date} 
         symptoms={patient.symptoms} 
-        setEdit={props.setEdit}/>
+        setEdit={props.setEdit}
+        setDelete={props.setDelete}/>
         ))
 
     return(

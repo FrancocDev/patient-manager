@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Header from './components/Header';
 import Form from './components/Form';
 import PatientList from './components/PatientsList';
 
 function App() {
-  const [patients, setPatients] = useState([])
+  const [patients, setPatients] = useState(() => JSON.parse(localStorage.getItem('patients'))||[])
   const [patientEdit, setPatientEdit] = useState(null)
 
   function handleSubmit(newPatient){
@@ -23,12 +23,20 @@ function App() {
     setPatientEdit(patient)
   }
 
+  function setDelete(id){
+    setPatients(prev => prev.filter(patient => patient.id !== id))
+  }
+
+  useEffect(() => {
+    localStorage.setItem('patients', JSON.stringify(patients))
+  }, [patients])
+
   return (
     <>
       <Header/>
       <main className='md:flex w-full items-start'>
         <Form handleSubmit={handleSubmit} patientEdit={patientEdit} setPatientEdit={setPatientEdit} handleEdit={handleEdit}/>
-        <PatientList patients={patients} setEdit={setEdit}/>
+        <PatientList patients={patients} setEdit={setEdit} setDelete={setDelete}/>
       </main>
     </>
   );
